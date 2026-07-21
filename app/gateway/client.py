@@ -9,18 +9,7 @@ from app.config import settings
 #   - Fallback: primary @rag/llama-3.3-70b-versatile → @brag/llama-3.1-8b-instant on failure
 #   - Cache: semantic mode (requires Portkey Enterprise — silently falls back to simple on free/starter)
 #   - Retry: 2 attempts on rate limit / server error before triggering the fallback target
-GATEWAY_CONFIG = {
-    "strategy": {"mode": "fallback"},
-    "cache": {"mode": "simple"},
-    "retry": {
-        "attempts": 2,
-        "on_status_codes": [429, 503]
-    },
-    "targets": [
-        {"override_params": {"model": f"@{settings.GROQ_SLUG}/llama-3.3-70b-versatile"}},
-        {"override_params": {"model": f"@{settings.GROQ_SLUG_2}/llama-3.1-8b-instant"}},
-    ]
-}
+
 
 portkey_client = Portkey(
     api_key=settings.PORTKEY_API_KEY,
@@ -39,6 +28,13 @@ def get_langchain_llm(feature: str = "rag") -> ChatOpenAI:
       auth + config). The @rag/model-name format is Portkey-specific — Groq's own client
       does not understand it. You are still using Groq models; Portkey is just in the middle.
     """
+    
+    print("=" * 60)
+    print("PORTKEY CONFIG:", settings.PORTKEY_CONFIG_SLUG)
+    print("GROQ_SLUG:", settings.GROQ_SLUG)
+    print("GROQ_SLUG_2:", settings.GROQ_SLUG_2)
+    print("MODEL:", f"@{settings.GROQ_SLUG}/llama-3.3-70b-versatile")
+    print("=" * 60)
     return ChatOpenAI(
         api_key=settings.PORTKEY_API_KEY,
         base_url=PORTKEY_GATEWAY_URL,

@@ -29,7 +29,7 @@ from evals.metrics import run_all_metrics
 # Page config
 # ─────────────────────────────────────────────────────────────────────────────
 st.set_page_config(
-    page_title="Enterprise RAG — Eval Suite",
+    page_title="KubeGuide AI — Eval Suite",
     page_icon="🧪",
     layout="wide",
 )

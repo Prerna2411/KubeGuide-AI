@@ -42,19 +42,35 @@ def generate_node(state: AgentState):
                 logfire.warning("Context truncated to fit Groq TPM limits.")
                 break
 
+        
         prompt = f"""
-        You are a Senior Technical Architect.
-        Answer the question using the TECHNICAL CONTEXT provided.
+            You are a Senior Kubernetes and Enterprise Infrastructure Architect.
 
-        TECHNICAL CONTEXT:
-        {full_context}
+            Your task is to answer the user's question using ONLY the documentation below.
 
-        CONVERSATION HISTORY:
-        {history_str}
+            Instructions:
 
-        USER QUESTION:
-        "{user_msg}"
-        """
+            - Produce a clear, complete answer.
+            - NEVER copy documentation verbatim.
+            - NEVER list the retrieved chunks.
+            - NEVER repeat the documentation.
+            - Summarize the information.
+            - If useful, include commands in markdown.
+            - If the documentation doesn't answer the question, clearly say so.
+            - Do not mention "documentation", "retrieved context", "chunks", or "sources".
+
+            Documentation:
+            {full_context}
+
+            Conversation History:
+            {history_str}
+
+            Question:
+            {user_msg}
+
+            Answer:
+            """
+                    
 
     with logfire.span("✍️ LLM Synthesis"):
         try:
@@ -62,7 +78,26 @@ def generate_node(state: AgentState):
                 messages=[{"role": "user", "content": prompt}],
                 temperature=0.1
             )
-            content = response.choices[0].message.content
+            
+            print("=" * 80)
+            print(response)
+            print("=" * 80)
+
+            try:
+                print(response.model_dump())
+            except Exception:
+                pass
+            
+            
+            #content = response.choices[0].message.content
+            
+            message = response.choices[0].message
+
+            print(message)
+
+            content = message.content
+
+            print("CONTENT =", repr(content))
             cache_status = extract_cache_status(response)
             is_cache_hit = cache_status == "HIT"
 
@@ -81,6 +116,13 @@ def generate_node(state: AgentState):
                 "plan": plan_update,
                 "messages": [{"role": "assistant", "content": content}]
             }
+            content = response.choices[0].message.content
+            print("RETURNED FINAL ANSWER:", content)
+            logfire.info(
+                f"📝 Generated Answer Length: {len(content) if content else 0}"
+            )
+
+            
 
         except Exception as e:
             logfire.error(f"LLM Generation failed: {e}")

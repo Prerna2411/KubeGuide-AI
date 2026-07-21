@@ -28,7 +28,7 @@ except Exception as e:
 
 # --- PAGE CONFIG ---
 st.set_page_config(
-    page_title="Enterprise Agentic RAG",
+    page_title="KubeGuide AI",
     page_icon="🤖",
     layout="wide",
 )
@@ -89,9 +89,9 @@ if prompt := st.chat_input("Ask about your documentation..."):
                         base_url = os.getenv("BACKEND_URL", "http://localhost:8000")
                         url = f"{base_url}/query"
                         payload = {"q": prompt, "thread_id": st.session_state.session_id}
-                        response = requests.post(url, json=payload, timeout=60)
+                        response = requests.post(url, json=payload, timeout=120)
                         data = response.json()
-                    
+                        print(data)
                     # Show Reasoning Steps from Backend
                     steps = data.get("thought_process", [])
                     for step in steps:
