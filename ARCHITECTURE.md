@@ -166,103 +166,120 @@ graph LR
 
 Query Processing Pipeline
 
-
-flowchart LR
 ```mermaid
-User --> Streamlit
+flowchart LR
 
-Streamlit --> FastAPI
+    U[👤 User] --> S[💬 Streamlit UI]
 
-FastAPI --> Intent
+    S --> F[⚡ FastAPI]
 
-Intent -->|Technical| Planner
+    F --> I[🧠 Groq Intent Classifier]
 
-Intent -->|Greeting| Response
+    I -->|Technical| P[📝 Planner]
 
-Intent -->|Capabilities| Response
+    I -->|Greeting| O[🛡️ Output Rails]
 
-Intent -->|Farewell| Response
+    I -->|Capabilities| O
 
-Intent -->|Off Topic| Reject
+    I -->|Farewell| O
 
-Intent -->|Jailbreak| Reject
+    I -->|Off Topic| R[🚫 Reject]
 
-Planner --> Retriever
+    I -->|Jailbreak| R
 
-Retriever --> Qdrant
+    P --> T[🔍 Retriever]
 
-Qdrant --> FlashRank
+    T --> Q[(Qdrant)]
 
-FlashRank --> Responder
+    Q --> FR[⚡ FlashRank]
 
-Responder --> OutputRails
+    FR --> RS[🤖 Responder]
 
-OutputRails --> User
+    RS --> O
 
+    O --> U
 ```
+
 
 Retrieval Pipeline
 
-flowchart LR
 ```mermaid
+flowchart LR
 
-Documents
+    D[Enterprise Documents]
+        --> C[Chunking]
 
---> Chunking
+    C
+        --> E[Gemini Embeddings]
 
---> Gemini Embeddings
+    E
+        --> Q[(Qdrant Cloud)]
 
---> Qdrant Cloud
+    UQ[User Query]
+        --> QE[Query Embedding]
 
-User Query
+    QE
+        --> VS[Vector Search]
 
---> Gemini Embedding
+    VS
+        --> Q
 
---> Vector Search
+    Q
+        --> FR[FlashRank]
 
---> FlashRank
+    FR
+        --> CT[Retrieved Context]
 
---> Context
+    CT
+        --> LLM[Groq LLM]
 
---> Groq LLM
-
---> Final Answer
-
+    LLM
+        --> ANS[Final Answer]
 ```
-
 
 Evaluation Pipeline
 
+
 ```mermaid
 flowchart LR
 
-Golden Dataset
+    G[Golden Dataset]
+        --> P[Live FastAPI Calls]
 
---> Live FastAPI Calls
+    P
+        --> R[Responses]
 
---> Responses
+    R
+        --> C[Retrieved Contexts]
 
---> Retrieved Contexts
+    C
+        --> GT[Guardrails Tests]
 
---> Guardrails Tests
+    GT
+        --> RG[RAGAS]
 
---> RAGAS
+    RG
+        --> F1[Faithfulness]
 
-RAGAS --> Faithfulness
+    RG
+        --> F2[Answer Relevancy]
 
-RAGAS --> Answer Relevancy
+    RG
+        --> F3[Context Precision]
 
-RAGAS --> Context Precision
+    RG
+        --> F4[Context Recall]
 
-RAGAS --> Context Recall
+    RG
+        --> F5[Answer Correctness]
 
-RAGAS --> Answer Correctness
+    R
+        --> TC[Tool Correctness]
 
-Responses --> Tool Correctness
-
-Responses --> Final Evaluation Report
-
+    R
+        --> REP[Evaluation Report]
 ```
+
 
 Deployment Architecture
 
