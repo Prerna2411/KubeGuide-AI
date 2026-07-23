@@ -1,6 +1,6 @@
 # 🤖 KubeGuide AI
 
-> **An enterprise-grade Agentic Retrieval-Augmented Generation (RAG) assistant for Kubernetes documentation, built with LangGraph, FastAPI, Portkey Gateway, Groq LLMs, Gemini Embeddings, and Qdrant Cloud.**
+**An enterprise-grade Agentic Retrieval-Augmented Generation (RAG) assistant for Kubernetes documentation, built with LangGraph, FastAPI, Portkey Gateway, Groq LLMs, Gemini Embeddings, and Qdrant Cloud.**
 
 KubeGuide AI helps users explore Kubernetes documentation through intelligent retrieval, multi-step reasoning, semantic search, conversation memory, and safety guardrails. It combines an agentic workflow with enterprise-grade observability and an integrated evaluation suite to provide accurate, explainable, and secure responses.
 
@@ -405,19 +405,4 @@ along with:
 
 ---
 
-# 🚀 Future Improvements
 
-- Multi-document collections
-- Hybrid BM25 + Vector Retrieval
-- Streaming responses
-- Authentication & RBAC
-- Docker Compose deployment
-- Kubernetes deployment manifests
-- CI/CD with GitHub Actions
-- Automatic evaluation reports
-
----
-
-# 📄 License
-
-This project is licensed under the **MIT License**.
