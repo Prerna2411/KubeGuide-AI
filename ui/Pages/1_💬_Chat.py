@@ -1,34 +1,3 @@
-import streamlit as st
-#
-st.set_page_config(
-    page_title="KubeGuide AI",
-    page_icon="🤖",
-    layout="wide",
-)
-
-# ---------------- Sidebar ---------------- #
-
-
-
-page = st.sidebar.radio(
-    "Navigation",
-    [
-        "💬 Chat Assistant",
-        "🧪 Evaluation Suite",
-    ],
-)
-
-st.sidebar.markdown("---")
-st.sidebar.caption("Enterprise Agentic RAG")
-st.sidebar.caption("LangGraph • Qdrant • Portkey • Logfire")
-
-# ---------------- Router ---------------- #
-
-
-st.title("🤖 KubeGuide AI")
-st.write("Choose a page from the sidebar.")
-
-
 import os
 import streamlit as st
 import requests
@@ -57,7 +26,12 @@ except Exception as e:
     
 
 
-
+# --- PAGE CONFIG ---
+st.set_page_config(
+    page_title="KubeGuide AI",
+    page_icon="🤖",
+    layout="wide",
+)
 
 # --- AVATARS ---
 AI_AVATAR = "🤖"
@@ -86,6 +60,8 @@ with st.sidebar:
         st.session_state.session_id = str(uuid.uuid4())
         st.rerun()
 
+# --- MAIN CHAT ---
+st.title("🤖 KubeGuide AI")
 
 
 # Display history
