@@ -1,0 +1,66 @@
+name: Enterprise Agentic RAG CI
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - develop
+
+  pull_request:
+    branches:
+      - main
+      - master
+      - develop
+
+jobs:
+  test:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: ["3.11"]
+
+    steps:
+
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Upgrade pip
+        run: |
+          python -m pip install --upgrade pip
+
+      - name: Install Dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Verify Imports
+        run: |
+          python -m compileall app
+          python -m compileall ui
+
+      - name: Check FastAPI App
+        run: |
+          python -c "from app.main import app; print('FastAPI Loaded Successfully')"
+
+      - name: Check Streamlit UI
+        run: |
+          python -m py_compile ui/app.py
+
+      - name: Check Streamlit Pages
+        run: |
+          python -m compileall ui/pages
+
+      - name: Run Tests
+        run: |
+          if [ -d tests ]; then
+              pytest
+          else
+              echo "No tests found. Skipping."
+          fi
