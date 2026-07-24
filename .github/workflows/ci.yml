@@ -46,6 +46,8 @@ jobs:
           python -m compileall ui
 
       - name: Check FastAPI App
+        env:
+            LOGFIRE_TOKEN: ${{ secrets.LOGFIRE_TOKEN }}
         run: |
           python -c "from app.main import app; print('FastAPI Loaded Successfully')"
 
