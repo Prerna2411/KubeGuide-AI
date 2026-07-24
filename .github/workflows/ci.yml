@@ -71,7 +71,7 @@ jobs:
 
       - name: Check Streamlit UI
         run: |
-          python -m py_compile ui/app.py
+          python -m py_compile ui/streamlit_app.py
 
       - name: Check Streamlit Pages
         run: |
