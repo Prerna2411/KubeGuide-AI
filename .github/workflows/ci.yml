@@ -17,7 +17,25 @@ jobs:
   test:
 
     runs-on: ubuntu-latest
+    env:
 
+      # Variables
+      LANGSMITH_TRACING: ${{ vars.LANGSMITH_TRACING }}
+      LANGSMITH_ENDPOINT: ${{ vars.LANGSMITH_ENDPOINT }}
+      LANGSMITH_PROJECT: ${{ vars.LANGSMITH_PROJECT }}
+      BACKEND_URL: ${{ vars.BACKEND_URL }}
+  
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+      JUDGE_GROQ: ${{ secrets.JUDGE_GROQ }}
+      LANGSMITH_API_KEY: ${{ secrets.LANGSMITH_API_KEY }}
+      LOGFIRE_TOKEN: ${{ secrets.LOGFIRE_TOKEN }}
+      PORTKEY_API_KEY: ${{ secrets.PORTKEY_API_KEY }}
+      PORTKEY_CONFIG_SLUG: ${{ secrets.PORTKEY_CONFIG_SLUG }}
+      QDRANT_API_KEY: ${{ secrets.QDRANT_API_KEY }}
+      QDRANT_CLUSTER_ENDPOINT: ${{ secrets.QDRANT_CLUSTER_ENDPOINT }}
+
+      
     strategy:
       matrix:
         python-version: ["3.11"]
